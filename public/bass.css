@@ -1,0 +1,96 @@
+body {
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+main {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.msgbox {
+    height: 95%;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid pink;
+    background-color: #efefef;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.textarea {
+    /* height: 16%; */
+    width: 100%;
+    box-sizing: border-box;
+    resize: none;
+    border: 2px solid pink;
+    padding: 10px;
+    outline: none;
+
+}
+.textarea #txt {
+    height: 300px;
+}
+
+.msg {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.msg img{
+    border-radius: 50%;
+}
+
+.msg section {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 6px;
+    position: relative;
+    word-break: break-all;
+    padding: 10px;
+    box-sizing: border-box;
+    
+}
+
+.left section {
+    margin-left: 10px;
+    /* padding: 10px;
+    box-sizing: border-box; */
+}
+.right section {
+    margin-right: 10px;
+    /* padding: 10px;
+    box-sizing: border-box; */
+}
+
+.msg section::after {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: -11px;
+    right: 11px;
+    border: 6px solid transparent;
+    border-right-color: #fff;
+}
+.right section::after{
+    border-right-color: transparent;
+    border-left-color: #fff;
+    left: auto;
+    right: -11px;
+}
+
+.tips{
+    position: fixed;
+    padding: 6px 10px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    display: none;
+}

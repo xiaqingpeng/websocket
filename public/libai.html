@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李白</title>
+    <link rel="stylesheet" href="./bass.css">
+</head>
+
+<body>
+    <main>
+        <div class="msgbox" id="msgbox">
+            <!-- <div class="msg left">
+                <img src="./dufu.png" width="40" height="40" alt="">
+                <section>
+                    hello,你好
+                </section>
+            </div>
+            <div class="msg right">
+                <section>
+                    hello,你好
+                </section>
+                <img src="./libai.png" width="40" height="40" alt="">
+            </div> -->
+        </div>
+        <textarea id="txt" placeholder="请输入内容">
+
+        </textarea>
+        <div class="tips" id="tips">
+            内容不为空
+        </div>
+
+    </main>
+</body>
+
+</html>
+<script>
+    const ws = new WebSocket("ws://localhost:3000/ws/libai")
+    const ws2 = new WebSocket("ws://localhost:3000/ws/libai2") // 李白接收数据
+
+    var txt = document.getElementById('txt')
+    var msgbox = document.getElementById('msgbox')
+    var tips = document.getElementById('tips')
+
+    function leftMsgFn(value) {
+        var leftHtml = `
+            <div class="msg left"> 
+                <img src="./dufu.png" width="40" height="40" alt="">
+                <section>
+                    ${value}
+                </section>
+            </div>
+        `
+        return leftHtml;
+    }
+    function rightMsgFn(value) {
+        var rightHtml = `
+            <div class="msg right"> 
+                <section>
+                    ${value}
+                </section>
+                <img src="./libai.png" width="40" height="40" alt="">
+            </div>
+        `
+        return rightHtml;
+    }
+    // var leftMsg = `哈喽，我是杜甫`
+    // msgbox.innerHTML += leftMsgFn(leftMsg);
+    ws.onopen = function () {
+        console.log(ws.readyState)
+    }
+    ws.onmessage = function (res) {
+        msgbox.innerHTML += rightMsgFn(res.data);
+        msgbox.scrollTo({
+            top: msgbox.scrollHeight,
+            behavior: 'smooth'
+        })
+    }
+
+
+
+    ws.onclose = function () {
+        console.log(`连接断开`)
+    }
+    ws.onerror = function (error) {
+        console.log(`连接错误:错误信息${error}`)
+    }
+    ws2.onopen = function () {
+        console.log(`ws2连接成功`)
+        console.log(ws2.readyState)
+    }
+    ws2.onmessage = function (res) {
+        console.log(res.data);
+        msgbox.innerHTML += leftMsgFn(res.data);
+        msgbox.scrollTo({
+            top: msgbox.scrollHeight,
+            behavior: 'smooth'
+        })
+    }
+    ws2.onclose = function () {
+        console.log(`连接断开`)
+    }
+    ws2.onerror = function (error) {
+        console.log(`连接错误:错误信息${error}`)
+    }
+    txt.onkeyup = function (e) {
+        if (e.keyCode === 13) {
+            if (txt.value.trim() !== "") {
+                let value = txt.value;
+              
+                ws.send(value) //发送数据到服务端
+
+
+            } else {
+                tips.style.display = "block"
+                setTimeout(() => {
+                    tips.style.display = "none"
+                }, 1500);
+            }
+            // 清空input框数据
+            txt.value = ''
+
+
+        }
+    }
+
+
+</script>
